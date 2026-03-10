@@ -228,17 +228,40 @@ export const NodeSelect = ({ value, onChange, options = [] }) => (
       background: 'rgba(255,255,255,0.05)',
       border: '1px solid rgba(255,255,255,0.1)',
       borderRadius: '6px',
-      padding: '5px 8px',
+      padding: '6px 28px 6px 8px',
       fontSize: '12px',
       color: '#e2e8f0',
       outline: 'none',
       boxSizing: 'border-box',
       cursor: 'pointer',
       appearance: 'none',
+      fontFamily: 'inherit',
+
+      /* custom dropdown icon */
+      backgroundImage:
+        "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='14' height='14' fill='none' stroke='%23cbd5f5' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpolyline points='4 6 7 9 10 6'/%3E%3C/svg%3E\")",
+      backgroundRepeat: 'no-repeat',
+      backgroundPosition: 'right 8px center',
+      backgroundSize: '14px',
+
+      transition: 'border-color 0.2s, background 0.2s'
+    }}
+    onFocus={(e) => {
+      e.target.style.borderColor = 'rgba(99,102,241,0.6)';
+    }}
+    onBlur={(e) => {
+      e.target.style.borderColor = 'rgba(255,255,255,0.1)';
     }}
   >
-    {options.map(opt => (
-      <option key={opt.value ?? opt} value={opt.value ?? opt} style={{ background: '#1e2235' }}>
+    {options.map((opt) => (
+      <option
+        key={opt.value ?? opt}
+        value={opt.value ?? opt}
+        style={{
+          background: '#1e2235',
+          color: '#e2e8f0'
+        }}
+      >
         {opt.label ?? opt}
       </option>
     ))}

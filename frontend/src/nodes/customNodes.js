@@ -3,6 +3,28 @@
 import { useState } from 'react';
 import { BaseNode, NodeLabel, NodeInput, NodeSelect, NodeTextarea, NodeRow } from './BaseNode';
 
+import {
+  Globe,
+  GitBranch,
+  StickyNote,
+  Zap,
+  Timer
+} from 'lucide-react';
+
+// helper to perfectly center icons
+const IconWrap = ({ children }) => (
+  <span
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}
+  >
+    {children}
+  </span>
+);
+
+
 // ─── 1. API Request Node ──────────────────────────────────────────────────────
 export const ApiNode = ({ id, data }) => {
   const [url, setUrl] = useState(data?.url || 'https://api.example.com');
@@ -12,7 +34,11 @@ export const ApiNode = ({ id, data }) => {
     <BaseNode
       id={id}
       title="API Request"
-      icon="🌐"
+      icon={
+        <IconWrap>
+          <Globe size={18} color="#34d399" />
+        </IconWrap>
+      }
       accentColor="#34d399"
       inputs={[{ id: 'body', label: 'body' }, { id: 'headers', label: 'headers' }]}
       outputs={[{ id: 'response', label: 'response' }, { id: 'status', label: 'status' }]}
@@ -25,13 +51,19 @@ export const ApiNode = ({ id, data }) => {
           options={['GET', 'POST', 'PUT', 'DELETE', 'PATCH']}
         />
       </NodeRow>
+
       <NodeRow style={{ marginBottom: 0 }}>
         <NodeLabel>URL</NodeLabel>
-        <NodeInput value={url} onChange={e => setUrl(e.target.value)} placeholder="https://..." />
+        <NodeInput
+          value={url}
+          onChange={e => setUrl(e.target.value)}
+          placeholder="https://..."
+        />
       </NodeRow>
     </BaseNode>
   );
 };
+
 
 // ─── 2. Conditional / If-Else Node ───────────────────────────────────────────
 export const ConditionNode = ({ id, data }) => {
@@ -41,7 +73,11 @@ export const ConditionNode = ({ id, data }) => {
     <BaseNode
       id={id}
       title="Condition"
-      icon="🔀"
+      icon={
+        <IconWrap>
+          <GitBranch size={18} color="#fbbf24" />
+        </IconWrap>
+      }
       accentColor="#fbbf24"
       inputs={[{ id: 'value', label: 'value' }]}
       outputs={[
@@ -63,13 +99,17 @@ export const ConditionNode = ({ id, data }) => {
 
 // ─── 3. Note / Comment Node ───────────────────────────────────────────────────
 export const NoteNode = ({ id, data }) => {
-  const [note, setNote] = useState(data?.note || 'Add a note...');
+  const [note, setNote] = useState(data?.note || '');
 
   return (
     <BaseNode
       id={id}
       title="Note"
-      icon="🗒️"
+      icon={
+        <IconWrap>
+          <StickyNote size={18} color="#94a3b8" />
+        </IconWrap>
+      }
       accentColor="#94a3b8"
       inputs={[]}
       outputs={[]}
@@ -79,7 +119,10 @@ export const NoteNode = ({ id, data }) => {
         value={note}
         onChange={e => setNote(e.target.value)}
         placeholder="Add a comment or note..."
-        style={{ minHeight: '60px', color: 'rgba(255,255,255,0.6)' }}
+        style={{
+          minHeight: '60px',
+          color: 'rgba(255,255,255,0.6)'
+        }}
       />
     </BaseNode>
   );
@@ -94,7 +137,11 @@ export const TransformNode = ({ id, data }) => {
     <BaseNode
       id={id}
       title="Transform"
-      icon="⚡"
+      icon={
+        <IconWrap>
+          <Zap size={18} color="#e879f9" />
+        </IconWrap>
+      }
       accentColor="#e879f9"
       inputs={[{ id: 'input', label: 'input' }]}
       outputs={[{ id: 'output', label: 'output' }]}
@@ -104,16 +151,30 @@ export const TransformNode = ({ id, data }) => {
         <NodeSelect
           value={operation}
           onChange={e => setOperation(e.target.value)}
-          options={['JSON Parse', 'JSON Stringify', 'Uppercase', 'Lowercase', 'Trim', 'Split', 'Join']}
+          options={[
+            'JSON Parse',
+            'JSON Stringify',
+            'Uppercase',
+            'Lowercase',
+            'Trim',
+            'Split',
+            'Join'
+          ]}
         />
       </NodeRow>
+
       <NodeRow style={{ marginBottom: 0 }}>
         <NodeLabel>Field (optional)</NodeLabel>
-        <NodeInput value={field} onChange={e => setField(e.target.value)} placeholder="data.field" />
+        <NodeInput
+          value={field}
+          onChange={e => setField(e.target.value)}
+          placeholder="data.field"
+        />
       </NodeRow>
     </BaseNode>
   );
 };
+
 
 // ─── 5. Timer / Delay Node ────────────────────────────────────────────────────
 export const TimerNode = ({ id, data }) => {
@@ -124,7 +185,11 @@ export const TimerNode = ({ id, data }) => {
     <BaseNode
       id={id}
       title="Timer"
-      icon="⏱️"
+      icon={
+        <IconWrap>
+          <Timer size={18} color="#f87171" />
+        </IconWrap>
+      }
       accentColor="#f87171"
       inputs={[{ id: 'trigger', label: 'trigger' }]}
       outputs={[{ id: 'output', label: 'output' }]}
@@ -139,6 +204,7 @@ export const TimerNode = ({ id, data }) => {
           type="number"
         />
       </NodeRow>
+
       <NodeRow style={{ marginBottom: 0 }}>
         <NodeLabel>Unit</NodeLabel>
         <NodeSelect

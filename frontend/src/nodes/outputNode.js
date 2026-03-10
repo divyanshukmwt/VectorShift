@@ -1,29 +1,57 @@
 // outputNode.js
 import { useState } from 'react';
 import { BaseNode, NodeLabel, NodeInput, NodeSelect, NodeRow } from './BaseNode';
+import { ArrowUpCircle } from 'lucide-react';
+
+// helper to center icon
+const IconWrap = ({ children }) => (
+  <span
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }}
+  >
+    {children}
+  </span>
+);
 
 export const OutputNode = ({ id, data }) => {
-  const [currName, setCurrName] = useState(data?.outputName || id.replace('customOutput-', 'output_'));
+  const [currName, setCurrName] = useState(
+    data?.outputName || id.replace('customOutput-', 'output_')
+  );
   const [outputType, setOutputType] = useState(data?.outputType || 'Text');
 
   return (
     <BaseNode
       id={id}
       title="Output"
-      icon="⬆️"
+      icon={
+        <IconWrap>
+          <ArrowUpCircle size={18} color="#f472b6" />
+        </IconWrap>
+      }
       accentColor="#f472b6"
       inputs={[{ id: 'value', label: 'value' }]}
     >
       <NodeRow>
         <NodeLabel>Name</NodeLabel>
-        <NodeInput value={currName} onChange={e => setCurrName(e.target.value)} placeholder="output_name" />
+        <NodeInput
+          value={currName}
+          onChange={(e) => setCurrName(e.target.value)}
+          placeholder="output_name"
+        />
       </NodeRow>
+
       <NodeRow style={{ marginBottom: 0 }}>
         <NodeLabel>Type</NodeLabel>
         <NodeSelect
           value={outputType}
-          onChange={e => setOutputType(e.target.value)}
-          options={[{ value: 'Text', label: 'Text' }, { value: 'Image', label: 'Image' }]}
+          onChange={(e) => setOutputType(e.target.value)}
+          options={[
+            { value: 'Text', label: 'Text' },
+            { value: 'Image', label: 'Image' }
+          ]}
         />
       </NodeRow>
     </BaseNode>

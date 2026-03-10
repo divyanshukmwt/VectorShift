@@ -4,18 +4,44 @@ import { DraggableNode } from './draggableNode';
 import { useStore } from './store';
 import { shallow } from 'zustand/shallow';
 
+import {
+  ArrowDownCircle,
+  ArrowUpCircle,
+  Brain,
+  FileText,
+  Globe,
+  GitBranch,
+  Zap,
+  Timer,
+  StickyNote,
+  Trash2,
+  AlertTriangle
+} from "lucide-react";
+
+// helper to center icons
+const IconWrap = ({ children }) => (
+  <span style={{
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center"
+  }}>
+    {children}
+  </span>
+);
+
 const NODES = [
   // Core nodes
-  { type: 'customInput', label: 'Input', icon: '⬇️', color: '#22d3ee', group: 'Core' },
-  { type: 'customOutput', label: 'Output', icon: '⬆️', color: '#f472b6', group: 'Core' },
-  { type: 'llm', label: 'LLM', icon: '🧠', color: '#a78bfa', group: 'Core' },
-  { type: 'text', label: 'Text', icon: '📝', color: '#fb923c', group: 'Core' },
+  { type: 'customInput', label: 'Input', icon: <IconWrap><ArrowDownCircle size={18} /></IconWrap>, color: '#22d3ee', group: 'Core' },
+  { type: 'customOutput', label: 'Output', icon: <IconWrap><ArrowUpCircle size={18} /></IconWrap>, color: '#f472b6', group: 'Core' },
+  { type: 'llm', label: 'LLM', icon: <IconWrap><Brain size={18} /></IconWrap>, color: '#a78bfa', group: 'Core' },
+  { type: 'text', label: 'Text', icon: <IconWrap><FileText size={18} /></IconWrap>, color: '#fb923c', group: 'Core' },
+
   // Custom nodes
-  { type: 'api', label: 'API', icon: '🌐', color: '#34d399', group: 'Logic' },
-  { type: 'condition', label: 'Condition', icon: '🔀', color: '#fbbf24', group: 'Logic' },
-  { type: 'transform', label: 'Transform', icon: '⚡', color: '#e879f9', group: 'Logic' },
-  { type: 'timer', label: 'Timer', icon: '⏱️', color: '#f87171', group: 'Logic' },
-  { type: 'note', label: 'Note', icon: '🗒️', color: '#94a3b8', group: 'Util' },
+  { type: 'api', label: 'API', icon: <IconWrap><Globe size={18} /></IconWrap>, color: '#34d399', group: 'Logic' },
+  { type: 'condition', label: 'Condition', icon: <IconWrap><GitBranch size={18} /></IconWrap>, color: '#fbbf24', group: 'Logic' },
+  { type: 'transform', label: 'Transform', icon: <IconWrap><Zap size={18} /></IconWrap>, color: '#e879f9', group: 'Logic' },
+  { type: 'timer', label: 'Timer', icon: <IconWrap><Timer size={18} /></IconWrap>, color: '#f87171', group: 'Logic' },
+  { type: 'note', label: 'Note', icon: <IconWrap><StickyNote size={18} /></IconWrap>, color: '#94a3b8', group: 'Util' },
 ];
 
 const groups = ['Core', 'Logic', 'Util'];
@@ -47,20 +73,38 @@ export const PipelineToolbar = () => {
       gap: '24px',
       fontFamily: "'DM Sans', 'Inter', sans-serif",
     }}>
+
       {/* Logo */}
       <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginRight: '8px' }}>
         <div style={{
-          width: 32, height: 32,
-          background: 'linear-gradient(135deg, #6366f1, #a78bfa)',
+          width: 32,
+          height: 32,
           borderRadius: '8px',
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          fontSize: '16px',
-          boxShadow: '0 0 12px rgba(99,102,241,0.4)',
-        }}>⚡</div>
+          overflow: 'hidden',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          background: 'rgba(255,255,255,0.04)'
+        }}>
+          <img
+            src="https://framerusercontent.com/images/PUVFaa9JKxr86MtwPIPVKLjAY.png?width=50&height=50"
+            alt="VectorShift"
+            style={{
+              width: '30px',
+              height: '30px',
+              objectFit: 'contain'
+            }}
+          />
+        </div>
+
         <span style={{
-          fontSize: '14px', fontWeight: 700, color: '#e2e8f0',
+          fontSize: '14px',
+          fontWeight: 700,
+          color: '#e2e8f0',
           letterSpacing: '-0.02em',
-        }}>VectorShift</span>
+        }}>
+          VectorShift
+        </span>
       </div>
 
       <div style={{ width: '1px', height: '32px', background: 'rgba(255,255,255,0.08)' }} />
@@ -69,10 +113,16 @@ export const PipelineToolbar = () => {
       {groups.map(group => (
         <div key={group} style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           <span style={{
-            fontSize: '10px', color: 'rgba(255,255,255,0.3)',
-            fontWeight: 600, letterSpacing: '0.1em', textTransform: 'uppercase',
+            fontSize: '10px',
+            color: 'rgba(255,255,255,0.3)',
+            fontWeight: 600,
+            letterSpacing: '0.1em',
+            textTransform: 'uppercase',
             marginRight: '2px',
-          }}>{group}</span>
+          }}>
+            {group}
+          </span>
+
           {NODES.filter(n => n.group === group).map(node => (
             <DraggableNode
               key={node.type}
@@ -85,10 +135,10 @@ export const PipelineToolbar = () => {
         </div>
       ))}
 
-      {/* Spacer pushes Clear All to the right */}
+      {/* Spacer */}
       <div style={{ flex: 1 }} />
 
-      {/* Clear All button — top right */}
+      {/* Clear All button */}
       <button
         onClick={handleClear}
         disabled={nodes.length === 0}
@@ -97,7 +147,11 @@ export const PipelineToolbar = () => {
           background: confirmClear ? 'rgba(248,113,113,0.15)' : 'rgba(255,255,255,0.04)',
           border: `1px solid ${confirmClear ? 'rgba(248,113,113,0.5)' : 'rgba(255,255,255,0.1)'}`,
           borderRadius: '8px',
-          color: confirmClear ? '#f87171' : nodes.length === 0 ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.5)',
+          color: confirmClear
+            ? '#f87171'
+            : nodes.length === 0
+            ? 'rgba(255,255,255,0.2)'
+            : 'rgba(255,255,255,0.5)',
           fontSize: '12px',
           fontWeight: 500,
           cursor: nodes.length === 0 ? 'not-allowed' : 'pointer',
@@ -108,25 +162,17 @@ export const PipelineToolbar = () => {
           alignItems: 'center',
           gap: '6px',
         }}
-        onMouseEnter={e => {
-          if (nodes.length > 0 && !confirmClear) {
-            e.currentTarget.style.borderColor = 'rgba(248,113,113,0.4)';
-            e.currentTarget.style.color = '#f87171';
-            e.currentTarget.style.background = 'rgba(248,113,113,0.08)';
-          }
-        }}
-        onMouseLeave={e => {
-          if (!confirmClear) {
-            e.currentTarget.style.borderColor = 'rgba(255,255,255,0.1)';
-            e.currentTarget.style.color = nodes.length === 0 ? 'rgba(255,255,255,0.2)' : 'rgba(255,255,255,0.5)';
-            e.currentTarget.style.background = 'rgba(255,255,255,0.04)';
-          }
-        }}
       >
-        <span>{confirmClear ? '⚠️' : '🗑'}</span>
-        <span>{confirmClear ? 'Confirm Clear?' : 'Clear All'}</span>
+        {confirmClear
+          ? <AlertTriangle size={14} />
+          : <Trash2 size={14} />
+        }
+
+        <span>
+          {confirmClear ? 'Confirm Clear?' : 'Clear All'}
+        </span>
       </button>
+
     </div>
   );
 };
-
