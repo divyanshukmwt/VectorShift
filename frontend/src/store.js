@@ -5,6 +5,7 @@ import {
     addEdge,
     applyNodeChanges,
     applyEdgeChanges,
+    updateEdge,
     MarkerType,
   } from 'reactflow';
 
@@ -38,6 +39,20 @@ export const useStore = create((set, get) => ({
     onConnect: (connection) => {
       set({
         edges: addEdge({...connection, type: 'smoothstep', animated: true, markerEnd: {type: MarkerType.Arrow, height: '20px', width: '20px'}}, get().edges),
+      });
+    },
+    deleteNode: (nodeId) => {
+      set({
+        nodes: get().nodes.filter((n) => n.id !== nodeId),
+        edges: get().edges.filter((e) => e.source !== nodeId && e.target !== nodeId),
+      });
+    },
+    clearAll: () => {
+      set({ nodes: [], edges: [] });
+    },
+    onReconnect: (oldEdge, newConnection) => {
+      set({
+        edges: updateEdge(oldEdge, newConnection, get().edges),
       });
     },
     updateNodeField: (nodeId, fieldName, fieldValue) => {

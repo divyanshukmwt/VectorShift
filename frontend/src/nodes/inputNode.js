@@ -1,3 +1,4 @@
+// inputNode.js
 import { useState } from 'react';
 import { BaseNode, NodeLabel, NodeInput, NodeSelect, NodeRow } from './BaseNode';
 
